@@ -20,6 +20,7 @@ class Fastphp
     // 运行程序
     public function run()
     {
+        // spl_autoload_register — 注册给定的函数作为 __autoload 的实现
         spl_autoload_register(array($this, 'loadClass'));
         $this->setReporting();
         $this->removeMagicQuotes();
@@ -45,10 +46,10 @@ class Fastphp
         if ($url) {
             // 使用“/”分割字符串，并保存在数组中
             $urlArray = explode('/', $url);
-            // 删除空的数组元素
+            // array_filter 用回调函数过滤数组中的单元 删除空的数组元素 
             $urlArray = array_filter($urlArray);
             
-            // 获取控制器名
+            // 获取控制器名 ucfirst — 将字符串的首字母转换为大写
             $controllerName = ucfirst($urlArray[0]);
             
             // 获取动作名
@@ -76,6 +77,7 @@ class Fastphp
 
         // $dispatch保存控制器实例化后的对象，我们就可以调用它的方法，
         // 也可以像方法中传入参数，以下等同于：$dispatch->$actionName($param)
+        // call_user_func_array — 调用回调函数，并把一个数组参数作为回调函数的参数
         call_user_func_array(array($dispatch, $actionName), $param);
     }
 
@@ -83,6 +85,8 @@ class Fastphp
     public function setReporting()
     {
         if (APP_DEBUG === true) {
+            //error_reporting — 设置应该报告何种 PHP 错误
+            //ini_set — 为一个配置选项设置值
             error_reporting(E_ALL);
             ini_set('display_errors','On');
         } else {
@@ -102,6 +106,7 @@ class Fastphp
     // 检测敏感字符并删除
     public function removeMagicQuotes()
     {
+        //get_magic_quotes_gpc — 获取当前 magic_quotes_gpc 的配置选项设置
         if (get_magic_quotes_gpc()) {
             $_GET = isset($_GET) ? $this->stripSlashesDeep($_GET ) : '';
             $_POST = isset($_POST) ? $this->stripSlashesDeep($_POST ) : '';

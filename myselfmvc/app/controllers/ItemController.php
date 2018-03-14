@@ -20,8 +20,6 @@ class ItemController extends Controller
         }
 
         $this->assign('title', '全部条目');
-        $this->assign('keyword', $keyword);
-        $this->assign('items', $items);
         $this->render();
     }
 
